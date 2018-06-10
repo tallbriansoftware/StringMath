@@ -1,2 +1,3 @@
 # hello-world
-First repo
+This is my first repo on GetHub.
+This is my first edit.
