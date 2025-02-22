@@ -15,11 +15,11 @@ int main()
 {
     bool passed = true;
 
+    passed &= CompTests();
     passed &= AddTests();
     passed &= SubTests();
     passed &= MultTests();
     passed &= FactorialTests();
-    passed &= CompTests();
     //passed &= DivisionTests()
 
     if (passed)

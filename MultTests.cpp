@@ -35,9 +35,22 @@ bool DoMultTest(int64_t a, int64_t b)
     return passed;
 }
 
+bool CheckAllMultTest(int64_t a, int64_t b)
+{
+    bool passed = true;
+
+    passed &= DoMultTest(a, b);
+    passed &= DoMultTest(a, -b);
+    passed &= DoMultTest(-a, b);
+    passed &= DoMultTest(-a, -b);
+
+    return passed;
+}
+
+
 bool CheckMultTest(int64_t a, int64_t b)
 {
-    bool passed = DoMultTest(a, b);
+    bool passed = CheckAllMultTest(a, b);
     if (passed)
         std::cout << "PASSED: MultTest(" << a << ", " << b << ")\n";
     return passed;

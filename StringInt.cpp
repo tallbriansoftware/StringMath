@@ -288,8 +288,6 @@ StringInt& StringInt::operator-=(const StringInt& rhs)
     return *this;
 }
 
-
-
 StringInt StringInt::operator*(const StringInt& rhs) const
 {
     const StringInt& longer = (this->Length() > rhs.Length()) ? *this : rhs;
@@ -305,9 +303,11 @@ StringInt StringInt::operator*(const StringInt& rhs) const
         line.Shift(i);
         result += line;
     }
+
+    if (longer.IsNegitive() != shorter.IsNegitive())
+        result.m_isNegitive = true;
     return result;
 }
-
 
 StringInt& StringInt::operator*=(const StringInt& rhs)
 {
@@ -316,12 +316,10 @@ StringInt& StringInt::operator*=(const StringInt& rhs)
     return *this;
 }
 
-
 StringInt StringInt::operator/(const StringInt& rhs) const
 {
     return StringInt(0);
 }
-
 
 StringInt StringInt::operator!() const
 {
@@ -334,7 +332,6 @@ StringInt StringInt::operator!() const
     }
     return result;
 }
-
 
 StringInt& StringInt::SingleMult(int m)
 {
