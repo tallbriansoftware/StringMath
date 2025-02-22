@@ -27,31 +27,44 @@ bool DoAddTest(int64_t a, int64_t b)
 
     if ((long long)dsi != c)
     {
-        std::cout << "+= FAIL: " << asi.ToString() << " += " << bsi.ToString() << " makes " << dsi.ToString()
-            << "should be " << c << std::endl;
+        std::cout << "+= FAIL: " << asi.ToString() << " += " << bsi.ToString()
+            << " makes " << dsi.ToString()
+            << " should be " << c << std::endl;
         passed = false;
     }
     return passed;
 }
 
+bool CheckAllAddTest(int64_t a, int64_t b)
+{
+    bool passed = true;
+
+    passed &= DoAddTest(a, b);
+    passed &= DoAddTest(a, -b);
+    passed &= DoAddTest(-a, b);
+    passed &= DoAddTest(-a, -b);
+
+    return passed;
+}
 
 bool CheckAddTest(int64_t a, int64_t b)
 {
-    bool passed = DoAddTest(a, b);
+    bool passed = CheckAllAddTest(a, b);
     if (passed)
         std::cout << "PASSED: AddTest(" << a << ", " << b << ")\n";
     return passed;
 }
-
 
 bool AddTests()
 {
     bool passed = true;
 
     passed &= CheckAddTest(1144, 331);
-    passed &= CheckAddTest(338, 226);
-    passed &= CheckAddTest(678, 876);
-    passed &= CheckAddTest(999867, 497);
+    passed &= CheckAddTest(222222, 22);
+    passed &= CheckAddTest(100100, 10000);
+    passed &= CheckAddTest(0, 324);
+    passed &= CheckAddTest(0, 0);
+
 
     return passed;
 }

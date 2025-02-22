@@ -20,7 +20,7 @@ namespace
 
 
 StringInt::StringInt()
-    : m_valueString("0")
+    : m_valueString()
     , m_isNegitive(false)
 { }
 
@@ -52,6 +52,7 @@ StringInt::operator long long() const
 StringInt& StringInt::operator=(const StringInt& rhs)
 {
     m_valueString = rhs.m_valueString;
+    m_isNegitive = rhs.m_isNegitive;
     return *this;
 }
 
@@ -149,6 +150,8 @@ StringInt StringInt::operator!=(const StringInt& rhs) const
 
 // =======  Addition Operators =============
 
+// Adds two positive number together.
+//
 StringInt StringInt::SimpleAddition(const StringInt& a, const StringInt& b) const
 {
     StringInt result(0);
@@ -173,28 +176,23 @@ StringInt StringInt::SimpleAddition(const StringInt& a, const StringInt& b) cons
 
 StringInt StringInt::operator+(const StringInt& rhs) const
 {
-    if(this->IsPositive() && rhs.IsPositive())
-        return SimpleAddition(*this, rhs);
+    StringInt result;
 
-    return StringInt(44);
-
-    //StringInt result(0);
-    //int longest = this->Length() > rhs.Length() ? this->Length() : rhs.Length();
-
-    //int carry = 0;
-    //for (int i = 0; i < longest; i++)
-    //{
-    //    int a_d = (i < this->Length()) ? this->m_valueString[i] - '0' : 0;
-    //    int b_d = (i < rhs.Length()) ? rhs.m_valueString[i] - '0' : 0;
-    //    int value = a_d + b_d + carry;
-    //    carry = value / 10;
-    //    char d = (value % 10) + '0';
-    //    result.m_valueString.push_back(d);
-    //}
-    //if (carry > 0)
-    //    result.m_valueString.push_back('1');
-
-    //return result;
+    if (this->IsPositive())
+    {
+        if (rhs.IsPositive())
+            result = SimpleAddition(*this, rhs);
+        else
+            result = SimpleSubtraction(*this, AbsoluteValue(rhs));
+    }
+    else
+    {
+        if (rhs.IsPositive())
+            result = SimpleSubtraction(rhs, AbsoluteValue(*this));
+        else
+            result = Negation(SimpleAddition(AbsoluteValue(*this), AbsoluteValue(rhs)));
+    }
+    return result;
 }
 
 
@@ -205,12 +203,89 @@ StringInt& StringInt::operator+=(const StringInt& rhs)
     return *this;
 }
 
+// ============= AbsoluteValue and Negation
+
+StringInt StringInt::AbsoluteValue(const StringInt& a) const
+{
+    StringInt result(a);
+    result.m_isNegitive = false;
+    return result;
+}
+
+StringInt StringInt::Negation(const StringInt& a) const
+{
+    StringInt result(a);
+    result.m_isNegitive = !result.m_isNegitive;
+    return result;
+}
+
+
 // ============= Subtraction operators ===========
+
+// Subtracts two positive number.
+//
+StringInt StringInt::SimpleSubtraction(const StringInt& a, const StringInt& b) const
+{
+    StringInt result;
+
+    if (b > a)
+    {
+        SimpleSubtraction_FMBL(result, b, a);
+        result.m_isNegitive = true;
+    }
+    else
+        SimpleSubtraction_FMBL(result, a, b);
+
+    return result;
+}
+
+// Subtracts two positive numbers.
+// The first must be larger than the second.
+//
+void StringInt::SimpleSubtraction_FMBL(StringInt& result, const StringInt& larger, const StringInt& smaller) const
+{ 
+    result.Clear();
+    bool borrowed = false;
+    for (int i = 0; i < larger.Length(); i++)
+    {
+        int a_d = (i < larger.Length()) ? larger.m_valueString[i] - '0' : 0;
+        a_d -= (borrowed ? 1 : 0);
+        borrowed = false;
+        int b_d = (i < smaller.Length()) ? smaller.m_valueString[i] - '0' : 0;
+
+        if (b_d > a_d)
+            borrowed = true;
+        int value = a_d + (borrowed ? 10 : 0) - b_d;
+        char d = value + '0';
+        // skip the last (most sig) digit if it is 0;
+        if (!(value == 0 && i >= larger.Length() - 1))
+            result.m_valueString.push_back(d);
+    }
+}
 
 StringInt StringInt::operator-(const StringInt& rhs) const
 {
-    StringInt result(0);
-    return result;
+    if (this->IsPositive())
+    {
+        if (rhs.IsPositive())
+            return SimpleSubtraction(*this, rhs);
+        else
+            return SimpleAddition(*this, AbsoluteValue(rhs));
+    }
+    else
+    {
+        if (rhs.IsPositive())
+            return Negation(SimpleAddition(AbsoluteValue(*this), rhs));
+        else
+            return Negation(SimpleSubtraction(AbsoluteValue(*this), AbsoluteValue(rhs)));
+    }
+}
+
+StringInt& StringInt::operator-=(const StringInt& rhs)
+{
+    StringInt result = *this - rhs;
+    *this = result;
+    return *this;
 }
 
 
@@ -281,6 +356,12 @@ StringInt& StringInt::SingleMult(int m)
         result.m_valueString.push_back(carry + '0');
     *this = result;
     return *this;
+}
+
+void StringInt::Clear()
+{
+    m_valueString.clear();
+    m_isNegitive = false;
 }
 
 bool StringInt::IsNegitive() const

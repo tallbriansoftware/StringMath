@@ -134,6 +134,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MultTests.cpp" />
     <ClCompile Include="StringInt.cpp" />
+    <ClCompile Include="SubTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddTests.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="FactorialTests.h" />
     <ClInclude Include="MultTests.h" />
     <ClInclude Include="StringInt.h" />
+    <ClInclude Include="SubTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

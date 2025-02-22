@@ -76,9 +76,22 @@ bool DoCompTest(int64_t a, int64_t b)
 }
 
 
+bool CheckAllCompTest(int64_t a, int64_t b)
+{
+    bool passed = true;
+
+    passed &= DoCompTest(a, b);
+    passed &= DoCompTest(a, -b);
+    passed &= DoCompTest(-a, b);
+    passed &= DoCompTest(-a, -b);
+
+    return passed;
+}
+
+
 bool CheckCompTest(int64_t a, int64_t b)
 {
-    bool passed = DoCompTest(a, b);
+    bool passed = CheckAllCompTest(a, b);
     if (passed)
         std::cout << "PASSED: ComparisonTest(" << a << ", " << b << ")\n";
     return passed;
@@ -90,13 +103,11 @@ bool CompTests()
     bool passed = true;
 
     passed &= CheckCompTest(1144, 331);
-    passed &= CheckCompTest(338, 226);
-    passed &= CheckCompTest(678, 876);
     passed &= CheckCompTest(0, 497);
     passed &= CheckCompTest(867, 0);
-    passed &= CheckCompTest(-32, 16);
-    passed &= CheckCompTest(-123, 123);
-    passed &= CheckCompTest(-1323, -1333);
+    passed &= CheckCompTest(4422, 4422);
+    passed &= CheckCompTest(0, 0);
+    passed &= CheckCompTest(1, 1);
 
     return passed;
 }

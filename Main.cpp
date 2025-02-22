@@ -1,5 +1,6 @@
 
 #include "AddTests.h"
+#include "SubTests.h"
 #include "MultTests.h"
 #include "FactorialTests.h"
 #include "CompTests.h"
@@ -15,6 +16,7 @@ int main()
     bool passed = true;
 
     passed &= AddTests();
+    passed &= SubTests();
     passed &= MultTests();
     passed &= FactorialTests();
     passed &= CompTests();

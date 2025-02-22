@@ -25,7 +25,7 @@ public:
     StringInt& operator+=(const StringInt& rhs);
 
     StringInt operator-(const StringInt& rhs) const;
-
+    StringInt& operator-=(const StringInt& rhs);
 
     StringInt operator*(const StringInt& rhs) const;
     StringInt& operator*=(const StringInt& rhs);
@@ -39,10 +39,15 @@ public:
 
 
 private:
+    void Clear();
     int Length() const;
     bool IsPositive() const;
     bool IsNegitive() const;
+    StringInt Negation(const StringInt& a) const;
+    StringInt AbsoluteValue(const StringInt& a) const;
     StringInt SimpleAddition(const StringInt& a, const StringInt& b) const;
+    StringInt SimpleSubtraction(const StringInt& a, const StringInt& b) const;
+    void SimpleSubtraction_FMBL(StringInt& result, const StringInt& larger, const StringInt& smaller) const;
     StringInt& SingleMult(int d);
     StringInt& Shift(int s);
     int64_t GetInt() const;
