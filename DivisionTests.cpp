@@ -8,7 +8,7 @@ bool DoDivTest(int64_t a, int64_t b)
 
     StringInt asi(a);
     StringInt bsi(b);
-     StringInt csi = asi / bsi;
+    StringInt csi = asi / bsi;
 
     //StringInt dsi = asi;
     //dsi /= bsi;

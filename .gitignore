@@ -7,13 +7,9 @@
 node_modules/
 dist/
 .vs/
-StringMath/x64/
-StringMath/Debug
-StringMath/Release
-StringMath/x64/
-StringMath/Debug
-x64/Debug
-x64/Release
+
+x64/
+
 # Compiled Java class files
 *.class
 
