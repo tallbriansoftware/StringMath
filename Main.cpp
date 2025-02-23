@@ -2,6 +2,7 @@
 #include "AddTests.h"
 #include "SubTests.h"
 #include "MultTests.h"
+#include "DivisionTests.h"
 #include "FactorialTests.h"
 #include "CompTests.h"
 
@@ -19,8 +20,8 @@ int main()
     passed &= AddTests();
     passed &= SubTests();
     passed &= MultTests();
+    passed &= DivisionTests();
     passed &= FactorialTests();
-    //passed &= DivisionTests()
 
     if (passed)
         std::cout << "All Tests PASSED\n";

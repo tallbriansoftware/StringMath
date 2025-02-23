@@ -7,12 +7,17 @@ namespace
     std::string ConvertInt64ToVector(int64_t x)
     {
         std::string val;
-        while (x > 0)
+        if (x == 0)
+            val = "0";
+        else
         {
-            uint8_t d = x % 10;
-            char digit = d + '0';
-            val.push_back(digit);
-            x /= 10;
+            while (x > 0)
+            {
+                uint8_t d = x % 10;
+                char digit = d + '0';
+                val.push_back(digit);
+                x /= 10;
+            }
         }
         return val;
     }
@@ -54,12 +59,6 @@ StringInt& StringInt::operator=(const StringInt& rhs)
     m_valueString = rhs.m_valueString;
     m_isNegitive = rhs.m_isNegitive;
     return *this;
-}
-
-
-int StringInt::Length() const
-{
-    return (int)m_valueString.size();
 }
 
 
@@ -154,7 +153,7 @@ StringInt StringInt::operator!=(const StringInt& rhs) const
 //
 StringInt StringInt::SimpleAddition(const StringInt& a, const StringInt& b) const
 {
-    StringInt result(0);
+    StringInt result;
     int longest = a.Length() > b.Length() ? a.Length() : b.Length();
 
     int carry = 0;
@@ -183,14 +182,14 @@ StringInt StringInt::operator+(const StringInt& rhs) const
         if (rhs.IsPositive())
             result = SimpleAddition(*this, rhs);
         else
-            result = SimpleSubtraction(*this, AbsoluteValue(rhs));
+            result = SimpleSubtraction(*this, rhs.AbsoluteValueOf());
     }
     else
     {
         if (rhs.IsPositive())
-            result = SimpleSubtraction(rhs, AbsoluteValue(*this));
+            result = SimpleSubtraction(rhs, this->AbsoluteValueOf());
         else
-            result = Negation(SimpleAddition(AbsoluteValue(*this), AbsoluteValue(rhs)));
+            result = (SimpleAddition(this->AbsoluteValueOf(), rhs.AbsoluteValueOf())).NegationOf();
     }
     return result;
 }
@@ -202,23 +201,6 @@ StringInt& StringInt::operator+=(const StringInt& rhs)
     *this = sum;
     return *this;
 }
-
-// ============= AbsoluteValue and Negation
-
-StringInt StringInt::AbsoluteValue(const StringInt& a) const
-{
-    StringInt result(a);
-    result.m_isNegitive = false;
-    return result;
-}
-
-StringInt StringInt::Negation(const StringInt& a) const
-{
-    StringInt result(a);
-    result.m_isNegitive = !result.m_isNegitive;
-    return result;
-}
-
 
 // ============= Subtraction operators ===========
 
@@ -265,20 +247,23 @@ void StringInt::SimpleSubtraction_FMBL(StringInt& result, const StringInt& large
 
 StringInt StringInt::operator-(const StringInt& rhs) const
 {
+    StringInt result;
+
     if (this->IsPositive())
     {
         if (rhs.IsPositive())
-            return SimpleSubtraction(*this, rhs);
+            result = SimpleSubtraction(*this, rhs);
         else
-            return SimpleAddition(*this, AbsoluteValue(rhs));
+            result = SimpleAddition(*this, rhs.AbsoluteValueOf());
     }
     else
     {
         if (rhs.IsPositive())
-            return Negation(SimpleAddition(AbsoluteValue(*this), rhs));
+            result = SimpleAddition(this->AbsoluteValueOf(), rhs).NegationOf();
         else
-            return Negation(SimpleSubtraction(AbsoluteValue(*this), AbsoluteValue(rhs)));
+            result = SimpleSubtraction(this->AbsoluteValueOf(), rhs.AbsoluteValueOf()).NegationOf();
     }
+    return result;
 }
 
 StringInt& StringInt::operator-=(const StringInt& rhs)
@@ -288,12 +273,19 @@ StringInt& StringInt::operator-=(const StringInt& rhs)
     return *this;
 }
 
+StringInt StringInt::operator*(int rhs) const
+{
+    StringInt result = *this;
+    result.SingleMult(rhs);
+    return result;
+}
+
 StringInt StringInt::operator*(const StringInt& rhs) const
 {
     const StringInt& longer = (this->Length() > rhs.Length()) ? *this : rhs;
     const StringInt& shorter = (this->Length() > rhs.Length()) ? rhs : *this;
 
-    StringInt result(0);
+    StringInt result;
 
     for (int i = 0; i < shorter.Length(); i++)
     {
@@ -318,7 +310,22 @@ StringInt& StringInt::operator*=(const StringInt& rhs)
 
 StringInt StringInt::operator/(const StringInt& rhs) const
 {
-    return StringInt(0);
+    StringInt result = SimpleDivision(*this, rhs);
+    return result;
+}
+
+StringInt StringInt::SimpleDivision(const StringInt& a, const StringInt& b) const
+{
+    if (b.GetInt() == 0)
+        throw std::exception("Divide by Zero");
+
+    StringInt multiTable[10];
+    for (int i = 0; i < 10; i++)
+    {
+        multiTable[i] = b * i;
+    }
+
+    return StringInt(42);
 }
 
 StringInt StringInt::operator!() const
@@ -338,14 +345,14 @@ StringInt& StringInt::SingleMult(int m)
     if (m < 0 || m> 9)
         throw std::exception("Invalid Argument SingleMult()");
 
-    StringInt result(0);
+    StringInt result;
 
     int carry = 0;
     for (int i = 0; i < this->Length(); i++)
     {
         int d = this->m_valueString[i] - '0';
         int term = d * m + carry;
-        carry = term / 10;
+        carry = (int)term / 10;
         int value = term % 10;
         result.m_valueString.push_back(value + '0');
     }
@@ -361,9 +368,9 @@ void StringInt::Clear()
     m_isNegitive = false;
 }
 
-bool StringInt::IsNegitive() const
+int StringInt::Length() const
 {
-    return m_isNegitive;
+    return (int)m_valueString.size();
 }
 
 bool StringInt::IsPositive() const
@@ -371,8 +378,32 @@ bool StringInt::IsPositive() const
     return !m_isNegitive;
 }
 
+bool StringInt::IsNegitive() const
+{
+    return m_isNegitive;
+}
+
+StringInt StringInt::NegationOf() const
+{
+    StringInt result(*this);
+    if (result.Length() != 0)
+        result.m_isNegitive = !result.m_isNegitive;
+    return result;
+}
+
+StringInt StringInt::AbsoluteValueOf() const
+{
+    StringInt result(*this);
+    if (result.Length() != 0)
+        result.m_isNegitive = false;
+    return result;
+}
+
 StringInt& StringInt::Shift(int s)
 {
+    if (Length() == 0)
+        return *this;
+
     if (s > 0)
     {
         std::string zeros;
@@ -397,6 +428,10 @@ int64_t StringInt::GetInt() const
     int64_t prev = 0;
     int64_t val = 0;
     int64_t mag = 1;
+
+    if (Length() == 0)
+        return 0;
+
     for (int i = 0; i < Length(); i++)
     {
         prev = val;

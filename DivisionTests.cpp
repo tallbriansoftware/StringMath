@@ -8,7 +8,7 @@ bool DoDivTest(int64_t a, int64_t b)
 
     StringInt asi(a);
     StringInt bsi(b);
-    StringInt csi = asi / bsi;
+     StringInt csi = asi / bsi;
 
     //StringInt dsi = asi;
     //dsi /= bsi;
@@ -17,8 +17,9 @@ bool DoDivTest(int64_t a, int64_t b)
 
     if ((long long)csi != c)
     {
-        std::cout << "/ (div) FAIL: " << asi.ToString() << " / " << bsi.ToString() << " = " << csi.ToString()
+        std::cout << "/ FAIL: " << asi.ToString() << " / " << bsi.ToString() << " = (" << csi.ToString() << ")"
             << " should be " << c << std::endl;
+
         passed = false;
     }
 
@@ -43,7 +44,7 @@ bool CheckDivTest(int64_t a, int64_t b)
 }
 
 
-bool DivTests()
+bool DivisionTests()
 {
     bool passed = true;
 

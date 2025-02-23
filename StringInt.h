@@ -28,6 +28,7 @@ public:
     StringInt& operator-=(const StringInt& rhs);
 
     StringInt operator*(const StringInt& rhs) const;
+    StringInt operator*(int rhs) const;
     StringInt& operator*=(const StringInt& rhs);
 
     StringInt operator/(const StringInt& rhs) const;
@@ -43,12 +44,13 @@ private:
     int Length() const;
     bool IsPositive() const;
     bool IsNegitive() const;
-    StringInt Negation(const StringInt& a) const;
-    StringInt AbsoluteValue(const StringInt& a) const;
+    StringInt NegationOf() const;
+    StringInt AbsoluteValueOf() const;
     StringInt SimpleAddition(const StringInt& a, const StringInt& b) const;
     StringInt SimpleSubtraction(const StringInt& a, const StringInt& b) const;
     void SimpleSubtraction_FMBL(StringInt& result, const StringInt& larger, const StringInt& smaller) const;
     StringInt& SingleMult(int d);
+    StringInt SimpleDivision(const StringInt& a, const StringInt& b) const;
     StringInt& Shift(int s);
     int64_t GetInt() const;
     int SpaceShip(const StringInt& a, const StringInt& b) const;

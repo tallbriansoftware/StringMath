@@ -62,6 +62,8 @@ bool MultTests()
     bool passed = true;
 
     passed &= CheckMultTest(4, 5);
+    passed &= CheckMultTest(0, 555);
+    passed &= CheckMultTest(0, 0);
     passed &= CheckMultTest(101, 77);
     passed &= CheckMultTest(7364, 339256);
     passed &= CheckMultTest(111155111, 66234);
