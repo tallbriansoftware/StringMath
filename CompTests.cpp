@@ -1,6 +1,6 @@
 #include "CompTests.h"
 
-#include "StringInt.h"
+#include "StringInt/StringInt.h"
 #include <assert.h>
 #include <iostream>
 

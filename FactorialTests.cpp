@@ -1,6 +1,6 @@
 #include "FactorialTests.h"
 
-#include "StringInt.h"
+#include "StringInt/StringInt.h"
 #include <iostream>
 
 bool DoFactorialTest(int64_t a)

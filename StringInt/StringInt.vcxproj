@@ -20,8 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main\StringInt.cpp" />
+    <ClCompile Include="Main\StringIntBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Main\StringIntBase.h" />
     <ClInclude Include="Public\StringInt\StringInt.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

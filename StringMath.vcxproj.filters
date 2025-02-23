@@ -14,9 +14,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringInt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AddTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,9 +34,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StringInt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AddTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>

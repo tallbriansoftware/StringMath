@@ -1,6 +1,6 @@
 #include "MultTests.h"
 
-#include "StringInt.h"
+#include "StringInt/StringInt.h"
 #include <iostream>
 
 

@@ -12,10 +12,16 @@
     <ClCompile Include="Main\StringInt.cpp">
       <Filter>main</Filter>
     </ClCompile>
+    <ClCompile Include="Main\StringIntBase.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Public\StringInt\StringInt.h">
       <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\StringIntBase.h">
+      <Filter>main</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

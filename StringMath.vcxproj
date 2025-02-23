@@ -105,6 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)/StringInt/Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)/StringInt/Public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,7 +136,6 @@
     <ClCompile Include="FactorialTests.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MultTests.cpp" />
-    <ClCompile Include="StringInt.cpp" />
     <ClCompile Include="SubTests.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,8 +144,12 @@
     <ClInclude Include="DivisionTests.h" />
     <ClInclude Include="FactorialTests.h" />
     <ClInclude Include="MultTests.h" />
-    <ClInclude Include="StringInt.h" />
     <ClInclude Include="SubTests.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="StringInt\StringInt.vcxproj">
+      <Project>{84aa75e6-79e6-4dc4-ab8b-9ed09362d041}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
