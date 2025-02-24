@@ -14,7 +14,7 @@ StringInt::StringInt(const StringInt& si)
     : m_base(si.m_base)
 { }
 
-StringInt::operator long long() const
+StringInt::operator int64_t() const
 {
     return m_base.GetInt64();
 }
@@ -125,6 +125,8 @@ StringInt& StringInt::operator*=(const StringInt& rhs)
     *this = product;
     return *this;
 }
+
+// ============= Factorial operator ===========
 
 StringInt StringInt::operator!() const
 {

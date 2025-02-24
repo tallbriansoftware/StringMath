@@ -14,7 +14,7 @@ public:
 
     std::string ToString();
 
-    operator long long() const;
+    operator int64_t() const;
     StringInt& operator=(const StringInt& rhs);
 
     StringInt operator>(const StringInt& rhs) const;

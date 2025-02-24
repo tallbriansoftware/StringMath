@@ -18,14 +18,14 @@ bool DoSubTest(int64_t a, int64_t b)
 
     bool passed = true;
 
-    if ((long long)csi != c)
+    if ((int64_t)csi != c)
     {
         std::cout << "- FAIL: " << asi.ToString() << " - " << bsi.ToString() << " = " << csi.ToString()
             << " should be " << c << std::endl;
         passed = false;
     }
 
-    if ((long long)dsi != c)
+    if ((int64_t)dsi != c)
     {
         std::cout << "-= FAIL: " << asi.ToString() << " -= " << bsi.ToString()
             << " makes " << dsi.ToString()

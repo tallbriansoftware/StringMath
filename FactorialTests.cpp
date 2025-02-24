@@ -16,7 +16,7 @@ bool DoFactorialTest(int64_t a)
     StringInt asi(a);
     StringInt csi = !asi;
 
-    if ((long long)csi != c)
+    if ((int64_t)csi != c)
     {
         std::cout << "Factorial: " << asi.ToString() << " ! " << " = " << csi.ToString()
             << "should be " << c << std::endl;

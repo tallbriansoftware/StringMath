@@ -119,7 +119,7 @@ int64_t StringIntBase::GetInt64() const
         prev = val;
         val += (m_valueString[i] - '0') * mag;
         if (val < prev)
-            throw std::exception("Value too Large for conversion to long long.");
+            throw std::exception("Value too Large for conversion to int64_t.");
         mag *= 10;
     }
     if (IsNegative())

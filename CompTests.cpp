@@ -8,16 +8,16 @@
 bool DoCompTest(int64_t a, int64_t b)
 {
     StringInt asi(a);
-    if ((long long)asi != a)
+    if ((int64_t)asi != a)
     {
         std::cout << "conversion of " << a << " to StringInt and back failed.  "
-            << "long long " << (long long)asi << ", " << "StringInt " << asi.ToString() << std::endl;
+            << "int64_t " << (int64_t)asi << ", " << "StringInt " << asi.ToString() << std::endl;
     }
     StringInt bsi(b);
-    if ((long long)bsi != b)
+    if ((int64_t)bsi != b)
     {
         std::cout << "conversion of " << b << " to StringInt and back failed.  "
-            << "long long=" << (long long)bsi << ", " << "StringInt " << bsi.ToString() << std::endl;
+            << "int64_t=" << (int64_t)bsi << ", " << "StringInt " << bsi.ToString() << std::endl;
     }
 
     bool shouldBeEqual = (a == b);
