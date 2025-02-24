@@ -252,7 +252,7 @@ bool StringIntBase::operator!=(const StringIntBase& rhs) const
 }
 
 
-void StringIntBase::AccumulateAddSameSigns(const StringIntBase& rhs)
+void StringIntBase::AddSameSignsAcc(const StringIntBase& rhs)
 {
     // If the signs are the same (pos or neg) we can just add the digits.
     if (this->IsPositive() != rhs.IsPositive())
@@ -284,7 +284,7 @@ StringIntBase StringIntBase::Add(const StringIntBase& rhs) const
     if (this->IsPositive() == rhs.IsPositive())
     {
         result = *this;
-        result.AccumulateAddSameSigns(rhs);
+        result.AddSameSignsAcc(rhs);
     }
     else
     {
@@ -305,7 +305,7 @@ StringIntBase StringIntBase::Add(const StringIntBase& rhs) const
     return result;
 }
 
-void StringIntBase::AccumulateSubtractSmallerSameSigns(const StringIntBase& rhs)
+void StringIntBase::SubtractSmallerSameSignsAcc(const StringIntBase& rhs)
 {
     if (this->IsNegative() != rhs.IsNegative())
         throw std::exception("accumulator and rhs must have the same sign in AccumulateSubtractSmallerPositive.");
@@ -345,13 +345,13 @@ StringIntBase StringIntBase::Subtract(const StringIntBase& subtrahend) const
         if(CompareAbsoluteValue(subtrahend, *this) == 1)
         {
             result = subtrahend;
-            result.AccumulateSubtractSmallerSameSigns(*this);
+            result.SubtractSmallerSameSignsAcc(*this);
             result.Negate();
         }
         else
         {
             result = *this;
-            result.AccumulateSubtractSmallerSameSigns(subtrahend);
+            result.SubtractSmallerSameSignsAcc(subtrahend);
         }
     }
     else
@@ -360,12 +360,12 @@ StringIntBase StringIntBase::Subtract(const StringIntBase& subtrahend) const
         // reverse the sign on the Sub
         // Add them together.
         result = subtrahend.NegationOf();
-        result.AccumulateAddSameSigns(*this);
+        result.AddSameSignsAcc(*this);
     }
     return result;
 }
 
-StringIntBase& StringIntBase::MultiplyBySingleDigit(int m)
+void StringIntBase::MultiplyBySingleDigitAcc(int m)
 {
     if (m < 0 || m> 9)
         throw std::exception("Invalid Argument MultiplyBySingleDigit()");
@@ -384,8 +384,8 @@ StringIntBase& StringIntBase::MultiplyBySingleDigit(int m)
     }
     if (carry > 0)
         result.SetDigit(length, carry);
+    result.TrimZeros();
     *this = result;
-    return *this;
 }
 
 //StringIntBase StringIntBase::MultiplyByScalar(int rhs) const
@@ -404,12 +404,54 @@ StringIntBase StringIntBase::Multiply(const StringIntBase& rhs) const
     {
         int d = shorter.GetDigit(i);
         StringIntBase line = longer;
-        line.MultiplyBySingleDigit(d);
+        line.MultiplyBySingleDigitAcc(d);
         line.Shift(i);
-        result.AccumulateAddSameSigns(line);
+        result.AddSameSignsAcc(line);
     }
 
     if (longer.IsNegative() != shorter.IsNegative())
         result.m_isNegative = true;
     return result;
+}
+
+StringIntBase StringIntBase::Divide(const StringIntBase& divisor) const
+{
+    StringIntBase multiples[10];
+
+    for (int i = 0; i < 10; i++)
+    {
+        multiples[i] = divisor;
+        multiples[i].MultiplyBySingleDigitAcc(i);
+    }
+
+    StringIntBase releventDividend;
+    StringIntBase quotient;
+    for (int i = Length() - 1; i >= 0; i--)
+    {
+        int digit = GetDigit(i);
+        releventDividend.Shift(1);
+        releventDividend.SetDigit(0, digit);
+
+        int past = 0;
+        while (past < 10)
+        {
+            if (multiples[past] > releventDividend)
+                break;
+            past += 1;
+        }
+        int factor = past - 1;
+        quotient.Shift(1);
+        quotient.SetDigit(0, factor);
+
+        if (factor > 0)
+        {
+            const StringIntBase& mult = multiples[factor];
+            releventDividend.SubtractSmallerSameSignsAcc(mult);
+        }
+    }
+    quotient.TrimZeros();
+    if (this->IsPositive() != divisor.IsPositive())
+        quotient.Negate();
+
+    return quotient;
 }

@@ -9,7 +9,7 @@ class StringInt
 {
 public:
     StringInt();
-    StringInt(int64_t x);
+    explicit StringInt(int64_t x);
     StringInt(const StringInt& si);
 
     std::string ToString();
@@ -17,12 +17,12 @@ public:
     operator int64_t() const;
     StringInt& operator=(const StringInt& rhs);
 
-    StringInt operator>(const StringInt& rhs) const;
-    StringInt operator<(const StringInt& rhs) const;
-    StringInt operator>=(const StringInt& rhs) const;
-    StringInt operator<=(const StringInt& rhs) const;
-    StringInt operator==(const StringInt& rhs) const;
-    StringInt operator!=(const StringInt& rhs) const;
+    bool operator>(const StringInt& rhs) const;
+    bool operator<(const StringInt& rhs) const;
+    bool operator>=(const StringInt& rhs) const;
+    bool operator<=(const StringInt& rhs) const;
+    bool operator==(const StringInt& rhs) const;
+    bool operator!=(const StringInt& rhs) const;
     
     StringInt operator+(const StringInt& rhs) const;
     StringInt& operator+=(const StringInt& rhs);
@@ -32,6 +32,9 @@ public:
 
     StringInt operator*(const StringInt& rhs) const;
     StringInt& operator*=(const StringInt& rhs);
+
+    StringInt operator/(const StringInt& rhs) const;
+    StringInt& operator/=(const StringInt& rhs);
 
     StringInt operator!() const;
 

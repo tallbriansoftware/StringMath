@@ -24,8 +24,6 @@ bool DoMultTest(int64_t a, int64_t b)
         passed = false;
     }
 
-    int64_t d = (int64_t)dsi;
-
     if ((int64_t)dsi != c)
     {
         std::cout << "*= FAIL: " << asi.ToString() << " *= " << bsi.ToString() << " makes " << dsi.ToString()

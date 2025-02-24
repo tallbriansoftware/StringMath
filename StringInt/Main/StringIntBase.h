@@ -31,8 +31,6 @@ public:
     int GetDigit(int idx) const;
     void SetDigit(int idx, int value);
     void TrimZeros();
-    StringIntBase& Shift(int s);
-
 
     int CompareAbsoluteValue(const StringIntBase& a, const StringIntBase& b) const;
     int SpaceShip(const StringIntBase& a, const StringIntBase& b) const;
@@ -46,15 +44,19 @@ public:
     bool operator==(const StringIntBase& rhs) const;
     bool operator!=(const StringIntBase& rhs) const;
 
-    void AccumulateAddSameSigns(const StringIntBase& term);
     StringIntBase Add(const StringIntBase& term) const;
-
-    void AccumulateSubtractSmallerSameSigns(const StringIntBase& term);
     StringIntBase Subtract(const StringIntBase& subtrahend) const;
-
-    StringIntBase& MultiplyBySingleDigit(int m);
-//    StringIntBase MultiplyByScalar(int rhs) const;
     StringIntBase Multiply(const StringIntBase& rhs) const;
+    StringIntBase Divide(const StringIntBase& rhs) const;
+
+private:
+    // Shift is private because it depends on the numeric base used by the representaion.
+    StringIntBase& Shift(int s);
+
+    void AddSameSignsAcc(const StringIntBase& term);
+    void SubtractSmallerSameSignsAcc(const StringIntBase& term);
+    void MultiplyBySingleDigitAcc(int m);
+
 
 private:
     bool m_isNegative;

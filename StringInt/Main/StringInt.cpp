@@ -32,39 +32,39 @@ std::string StringInt::ToString()
 
 // ====== comparison operators ======
 
-StringInt StringInt::operator>(const StringInt& rhs) const
+bool StringInt::operator>(const StringInt& rhs) const
 {
     int cmp = SpaceShip(*this, rhs);
     return cmp == 1;
 }
 
-StringInt StringInt::operator<(const StringInt& rhs) const
+bool StringInt::operator<(const StringInt& rhs) const
 {
     int cmp = SpaceShip(*this, rhs);
     return cmp == -1;
 }
 
-StringInt StringInt::operator>=(const StringInt& rhs) const
+bool StringInt::operator>=(const StringInt& rhs) const
 {
     int cmp = SpaceShip(*this, rhs);
     return cmp > -1;
 
 }
 
-StringInt StringInt::operator<=(const StringInt& rhs) const
+bool StringInt::operator<=(const StringInt& rhs) const
 {
     int cmp = SpaceShip(*this, rhs);
     return cmp < 1;
 
 }
 
-StringInt StringInt::operator==(const StringInt& rhs) const
+bool StringInt::operator==(const StringInt& rhs) const
 {
     int cmp = SpaceShip(*this, rhs);
     return cmp == 0;
 }
 
-StringInt StringInt::operator!=(const StringInt& rhs) const
+bool StringInt::operator!=(const StringInt& rhs) const
 {
     int cmp = SpaceShip(*this, rhs);
     return cmp != 0;
@@ -126,6 +126,23 @@ StringInt& StringInt::operator*=(const StringInt& rhs)
     return *this;
 }
 
+// ============= Divide operators ===========
+
+StringInt StringInt::operator/(const StringInt& rhs) const
+{
+    StringInt quotient;
+    quotient.m_base = this->m_base.Divide(rhs.m_base);
+    return quotient;
+}
+
+StringInt& StringInt::operator/=(const StringInt& rhs)
+{
+    StringInt quotient;
+    quotient.m_base = this->m_base.Divide(rhs.m_base);
+    *this = quotient;
+    return quotient;
+}
+
 // ============= Factorial operator ===========
 
 StringInt StringInt::operator!() const
@@ -135,7 +152,8 @@ StringInt StringInt::operator!() const
 
     for (int i = 1; i <= value; i++)
     {
-        result *= i;
+        StringInt isi(i);
+        result *= isi;
     }
     return result;
 }
