@@ -151,11 +151,11 @@ void StringIntBase::SetDigit(int idx, int value)
 
 void StringIntBase::TrimZeros()
 {
-    int last = Length() - 1;
-    while (last >= 0 && m_valueString[last] == '0')
-        last -= 1;
+    int idx = Length() - 1;
+    while (idx >= 0 && m_valueString[idx] == '0')
+        idx -= 1;
 
-    int validLength = last + 1;
+    int validLength = idx + 1;
     if (validLength != Length())
         m_valueString.resize(validLength);
 }
@@ -178,37 +178,37 @@ StringIntBase& StringIntBase::Shift(int s)
     return *this;
 }
 
-int StringIntBase::CompareAbsoluteValue(const StringIntBase& a, const StringIntBase& b) const
+int StringIntBase::CompareAbsoluteValue(const StringIntBase& rhs) const
 {
-    if (a.Length() > b.Length())
+    if (this->Length() > rhs.Length())
         return 1;
-    if (b.Length() > a.Length())
+    if (rhs.Length() > this->Length())
         return -1;
 
     // Same length numbers
-    for (int i = a.Length() - 1; i >= 0; i--)
+    for (int i = this->Length() - 1; i >= 0; i--)
     {
-        if (a.m_valueString[i] > b.m_valueString[i])
+        if (this->m_valueString[i] > rhs.m_valueString[i])
             return 1;
-        if (a.m_valueString[i] < b.m_valueString[i])
+        if (this->m_valueString[i] < rhs.m_valueString[i])
             return -1;
     }
     return 0;
 }
 
-int StringIntBase::SpaceShip(const StringIntBase& a, const StringIntBase& b) const
+int StringIntBase::SpaceShip(const StringIntBase& rhs) const
 {
     // Different signs
-    if (a.IsPositive() != b.IsPositive())
+    if (this->IsPositive() != rhs.IsPositive())
     {
-        if (a.IsPositive())
+        if (this->IsPositive())
             return 1;
         return -1;
     }
 
     // Same signs
-    int cmp = CompareAbsoluteValue(a, b);
-    if (a.IsNegative())
+    int cmp = this->CompareAbsoluteValue(rhs);
+    if (this->IsNegative())
         return -cmp;
     return cmp;
 }
@@ -217,37 +217,37 @@ int StringIntBase::SpaceShip(const StringIntBase& a, const StringIntBase& b) con
 
 bool StringIntBase::operator>(const StringIntBase& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp == 1;
 }
 
 bool StringIntBase::operator<(const StringIntBase& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp == -1;
 }
 
 bool StringIntBase::operator>=(const StringIntBase& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp > -1;
 }
 
 bool StringIntBase::operator<=(const StringIntBase& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp < 1;
 }
 
 bool StringIntBase::operator==(const StringIntBase& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp == 0;
 }
 
 bool StringIntBase::operator!=(const StringIntBase& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp != 0;
 }
 
@@ -310,7 +310,7 @@ void StringIntBase::SubtractSmallerSameSignsAcc(const StringIntBase& rhs)
     if (this->IsNegative() != rhs.IsNegative())
         throw std::exception("accumulator and rhs must have the same sign in AccumulateSubtractSmallerPositive.");
 
-    if(CompareAbsoluteValue(*this, rhs) == -1)
+    if(this->CompareAbsoluteValue(*this) == -1)
         throw std::exception("rhs must be less than or equal to Accumulator in AccumulateSubtractSmallerPositive.");
 
     bool borrow = false;
@@ -342,7 +342,7 @@ StringIntBase StringIntBase::Subtract(const StringIntBase& subtrahend) const
         // If the ABS(sub) is greater than ABS(this)
         // Then reverse the order
         // Negate the sign of the result.
-        if(CompareAbsoluteValue(subtrahend, *this) == 1)
+        if(subtrahend.CompareAbsoluteValue(*this) == 1)
         {
             result = subtrahend;
             result.SubtractSmallerSameSignsAcc(*this);

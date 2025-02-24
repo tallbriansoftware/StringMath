@@ -10,7 +10,6 @@ public:
     StringIntBase();
     StringIntBase(int64_t x);
     StringIntBase(const StringIntBase& sib);
-    explicit StringIntBase(const StringInt& foo);
 
     StringIntBase& operator=(const StringIntBase& rhs);
 
@@ -32,8 +31,8 @@ public:
     void SetDigit(int idx, int value);
     void TrimZeros();
 
-    int CompareAbsoluteValue(const StringIntBase& a, const StringIntBase& b) const;
-    int SpaceShip(const StringIntBase& a, const StringIntBase& b) const;
+    int CompareAbsoluteValue(const StringIntBase& rhs) const;
+    int SpaceShip(const StringIntBase& rhs) const;
 
     // ====== comparison operators ======
 

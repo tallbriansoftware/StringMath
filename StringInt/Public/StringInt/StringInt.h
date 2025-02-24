@@ -39,7 +39,7 @@ public:
     StringInt operator!() const;
 
 private:
-    int SpaceShip(const StringInt& a, const StringInt& b) const;
+    int SpaceShip(const StringInt& rhs) const;
 
     StringIntBase m_base;
 };

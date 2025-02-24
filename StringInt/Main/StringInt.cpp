@@ -34,45 +34,45 @@ std::string StringInt::ToString()
 
 bool StringInt::operator>(const StringInt& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp == 1;
 }
 
 bool StringInt::operator<(const StringInt& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp == -1;
 }
 
 bool StringInt::operator>=(const StringInt& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp > -1;
 
 }
 
 bool StringInt::operator<=(const StringInt& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp < 1;
 
 }
 
 bool StringInt::operator==(const StringInt& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp == 0;
 }
 
 bool StringInt::operator!=(const StringInt& rhs) const
 {
-    int cmp = SpaceShip(*this, rhs);
+    int cmp = SpaceShip(rhs);
     return cmp != 0;
 }
 
-int StringInt::SpaceShip(const StringInt& a, const StringInt& b) const
+int StringInt::SpaceShip(const StringInt& rhs) const
 {
-    return this->m_base.SpaceShip(a.m_base, b.m_base);
+    return this->m_base.SpaceShip(rhs.m_base);
 }
 
 
@@ -140,7 +140,7 @@ StringInt& StringInt::operator/=(const StringInt& rhs)
     StringInt quotient;
     quotient.m_base = this->m_base.Divide(rhs.m_base);
     *this = quotient;
-    return quotient;
+    return *this;
 }
 
 // ============= Factorial operator ===========
