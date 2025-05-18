@@ -10,6 +10,10 @@ StringInt::StringInt(int64_t x)
     : m_base(x)
 { }
 
+StringInt::StringInt(const std::string& str)
+    : m_base(str)
+{ }
+
 StringInt::StringInt(const StringInt& si)
     : m_base(si.m_base)
 { }

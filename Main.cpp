@@ -5,6 +5,7 @@
 #include "DivisionTests.h"
 #include "FactorialTests.h"
 #include "CompTests.h"
+#include "CtorTests.h"
 
 #include "StringInt/StringInt.h"
 
@@ -16,6 +17,7 @@ int main()
 {
     bool passed = true;
 
+    passed &= CtorTests();
     passed &= CompTests();
     passed &= AddTests();
     passed &= SubTests();

@@ -42,6 +42,22 @@ StringIntBase::StringIntBase(const StringIntBase& si)
     , m_valueString(si.m_valueString)
 { }
 
+StringIntBase::StringIntBase(const std::string& str)
+{
+    m_isNegative = false;
+    int start = 0;
+    if (str[0] == '-')
+    {
+        start = 1;
+        m_isNegative = true;
+    }
+    int end = (int)str.size() - 1;
+    for (int i = end; i >= start; i--)
+    {
+        m_valueString.push_back(str[i]);
+    }
+}
+
 StringIntBase& StringIntBase::operator=(const StringIntBase& rhs)
 {
     m_valueString = rhs.m_valueString;
@@ -331,40 +347,46 @@ void StringIntBase::SubtractSmallerSameSignsAcc(const StringIntBase& rhs)
     TrimZeros();
 }
 
-StringIntBase StringIntBase::Subtract(const StringIntBase& subtrahend) const
+// Subtract
+//  result = this - rhs;
+//
+StringIntBase StringIntBase::Subtract(const StringIntBase& rhs) const
 {
     StringIntBase result;
 
     // If both have the same sign it is easier.
     //
-    if (this->IsPositive() == subtrahend.IsPositive())
+    if (this->IsPositive() == rhs.IsPositive())
     {
-        // If the ABS(sub) is greater than ABS(this)
+        // If the ABS(rhs) is greater than ABS(this)
         // Then reverse the order
         // Negate the sign of the result.
-        if(subtrahend.CompareAbsoluteValue(*this) == 1)
+        if(rhs.CompareAbsoluteValue(*this) == 1)
         {
-            result = subtrahend;
+            result = rhs;
             result.SubtractSmallerSameSignsAcc(*this);
             result.Negate();
         }
         else
         {
             result = *this;
-            result.SubtractSmallerSameSignsAcc(subtrahend);
+            result.SubtractSmallerSameSignsAcc(rhs);
         }
     }
     else
     {
         // If the signs are different
-        // reverse the sign on the Sub
+        // reverse the sign on the Subtrahend
         // Add them together.
-        result = subtrahend.NegationOf();
+        result = rhs.NegationOf();
         result.AddSameSignsAcc(*this);
     }
     return result;
 }
 
+// MultiplyBySingleDigitAcc
+// this *= 0 through 9;
+//
 void StringIntBase::MultiplyBySingleDigitAcc(int m)
 {
     if (m < 0 || m> 9)
@@ -388,11 +410,9 @@ void StringIntBase::MultiplyBySingleDigitAcc(int m)
     *this = result;
 }
 
-//StringIntBase StringIntBase::MultiplyByScalar(int rhs) const
-//{
+// Multiply
+// result = this * rhs
 //
-//}
-
 StringIntBase StringIntBase::Multiply(const StringIntBase& rhs) const
 {
     const StringIntBase& longer = (this->Length() > rhs.Length()) ? *this : rhs;

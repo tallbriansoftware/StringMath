@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="AddTests.cpp" />
     <ClCompile Include="CompTests.cpp" />
+    <ClCompile Include="CtorTests.cpp" />
     <ClCompile Include="DivisionTests.cpp" />
     <ClCompile Include="FactorialTests.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="AddTests.h" />
     <ClInclude Include="CompTests.h" />
+    <ClInclude Include="CtorTests.h" />
     <ClInclude Include="DivisionTests.h" />
     <ClInclude Include="FactorialTests.h" />
     <ClInclude Include="MultTests.h" />

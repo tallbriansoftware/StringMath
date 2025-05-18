@@ -10,6 +10,7 @@ public:
     StringIntBase();
     StringIntBase(int64_t x);
     StringIntBase(const StringIntBase& sib);
+    StringIntBase(const std::string& string);
 
     StringIntBase& operator=(const StringIntBase& rhs);
 

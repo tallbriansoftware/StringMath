@@ -11,6 +11,7 @@ public:
     StringInt();
     explicit StringInt(int64_t x);
     StringInt(const StringInt& si);
+    StringInt(const std::string& str);
 
     std::string ToString();
 
