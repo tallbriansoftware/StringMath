@@ -65,6 +65,7 @@ bool DivisionTests()
     passed &= CheckDivTest(7767781, 77);
     passed &= CheckDivTest(7364, 339256);
     passed &= CheckDivTest(111155111, 66234);
+    passed &= CheckDivTest(111155111, 111155112);
 
     return passed;
 }

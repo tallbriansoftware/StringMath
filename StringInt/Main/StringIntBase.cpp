@@ -194,6 +194,12 @@ StringIntBase& StringIntBase::Shift(int s)
     return *this;
 }
 
+StringIntBase StringIntBase::ShiftOf(int s) const
+{
+    StringIntBase result = *this;
+    return result.Shift(s);
+}
+
 int StringIntBase::CompareAbsoluteValue(const StringIntBase& rhs) const
 {
     if (this->Length() > rhs.Length())
@@ -266,7 +272,6 @@ bool StringIntBase::operator!=(const StringIntBase& rhs) const
     int cmp = SpaceShip(rhs);
     return cmp != 0;
 }
-
 
 void StringIntBase::AddSameSignsAcc(const StringIntBase& rhs)
 {
@@ -434,44 +439,53 @@ StringIntBase StringIntBase::Multiply(const StringIntBase& rhs) const
     return result;
 }
 
-StringIntBase StringIntBase::Divide(const StringIntBase& divisor) const
+StringIntBase StringIntBase::IntDivide(const StringIntBase& divisor) const
 {
-    StringIntBase multiples[10];
+    const StringIntBase& numerator = *this;
 
+    // work with positive numbers.
+    // Work out the resulting sign of the quotient later.
+    //
+    StringIntBase wrkNumerator = numerator.AbsoluteValueOf();
+    StringIntBase wrkDivisor = divisor.AbsoluteValueOf();
+
+    // if the divisor is larger than the numerator
+    // return zero
+    //
+    StringIntBase quotient(0);
+    int mag_difference = numerator.Length() - divisor.Length();
+    if (mag_difference < 0)
+        return quotient;  // zero
+    if (mag_difference == 0 && divisor > numerator)
+        return quotient;  // zero
+
+    StringIntBase multiples[10];
     for (int i = 0; i < 10; i++)
     {
-        multiples[i] = divisor;
+        multiples[i] = wrkDivisor;
         multiples[i].MultiplyBySingleDigitAcc(i);
     }
 
-    StringIntBase releventDividend;
-    StringIntBase quotient;
-    for (int i = Length() - 1; i >= 0; i--)
+    for (int scale = mag_difference; scale >=0; scale--)
     {
-        int digit = GetDigit(i);
-        releventDividend.Shift(1);
-        releventDividend.SetDigit(0, digit);
-
-        int past = 0;
-        while (past < 10)
+        StringIntBase scaledDownNumerator = wrkNumerator;
+        scaledDownNumerator.Shift(-scale);
+        int factor = 0;
+        for (int d = 0; d < 9; d++)
         {
-            if (multiples[past] > releventDividend)
+            if (multiples[d] > scaledDownNumerator)
                 break;
-            past += 1;
+            factor = d;
         }
-        int factor = past - 1;
+        StringIntBase scaledUpDivisor = wrkDivisor.ShiftOf(scale);
+        scaledUpDivisor.MultiplyBySingleDigitAcc(factor);
+        wrkNumerator.SubtractSmallerSameSignsAcc(scaledUpDivisor);
         quotient.Shift(1);
         quotient.SetDigit(0, factor);
-
-        if (factor > 0)
-        {
-            const StringIntBase& mult = multiples[factor];
-            releventDividend.SubtractSmallerSameSignsAcc(mult);
-        }
     }
+
     quotient.TrimZeros();
     if (this->IsPositive() != divisor.IsPositive())
         quotient.Negate();
-
     return quotient;
 }

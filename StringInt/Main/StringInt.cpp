@@ -130,21 +130,31 @@ StringInt& StringInt::operator*=(const StringInt& rhs)
     return *this;
 }
 
-// ============= Divide operators ===========
+// ============= IntDivide operators ===========
 
 StringInt StringInt::operator/(const StringInt& rhs) const
 {
     StringInt quotient;
-    quotient.m_base = this->m_base.Divide(rhs.m_base);
+    quotient.m_base = this->m_base.IntDivide(rhs.m_base);
     return quotient;
 }
 
 StringInt& StringInt::operator/=(const StringInt& rhs)
 {
     StringInt quotient;
-    quotient.m_base = this->m_base.Divide(rhs.m_base);
+    quotient.m_base = this->m_base.IntDivide(rhs.m_base);
     *this = quotient;
     return *this;
+}
+
+// ============= Power operator ===============
+
+StringInt StringInt::operator^ (int exp) const
+{
+    StringInt result(1);
+    for (int i = 0; i < exp; i++)
+        result *= *this;
+    return result;
 }
 
 // ============= Factorial operator ===========

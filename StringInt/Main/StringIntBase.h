@@ -28,9 +28,6 @@ public:
     int64_t GetInt64() const;
     std::string ToString() const;
 
-    int GetDigit(int idx) const;
-    void SetDigit(int idx, int value);
-    void TrimZeros();
 
     int CompareAbsoluteValue(const StringIntBase& rhs) const;
     int SpaceShip(const StringIntBase& rhs) const;
@@ -47,11 +44,16 @@ public:
     StringIntBase Add(const StringIntBase& term) const;
     StringIntBase Subtract(const StringIntBase& subtrahend) const;
     StringIntBase Multiply(const StringIntBase& rhs) const;
-    StringIntBase Divide(const StringIntBase& rhs) const;
+    StringIntBase IntDivide(const StringIntBase& rhs) const;
 
 private:
+    int GetDigit(int idx) const;
+    void SetDigit(int idx, int value);
+    void TrimZeros();
+
     // Shift is private because it depends on the numeric base used by the representaion.
     StringIntBase& Shift(int s);
+    StringIntBase ShiftOf(int s) const;
 
     void AddSameSignsAcc(const StringIntBase& term);
     void SubtractSmallerSameSignsAcc(const StringIntBase& term);

@@ -37,6 +37,8 @@ public:
     StringInt operator/(const StringInt& rhs) const;
     StringInt& operator/=(const StringInt& rhs);
 
+    StringInt operator^(int exp) const;
+
     StringInt operator!() const;
 
 private:
